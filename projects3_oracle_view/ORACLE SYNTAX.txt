@@ -1,0 +1,138 @@
+CREATE TABLE MI181_ASCASABUENA.restaurant (
+  res_id NUmber(10)  NOT null,
+  res_loc varchar(45) DEFAULT NULL,
+  res_employed_num integer DEFAULT NULL,
+  CONSTRAINT res_pk PRIMARY KEY (res_id)
+) ;
+
+CREATE TABLE MI181_ASCASABUENA.supplier (
+  supp_id NUmber(10) NOT Null,
+  supp_name varchar(45) NOT NULL,
+  supp_contact integer DEFAULT NULL,
+  supp_address varchar(45) DEFAULT NULL,
+  CONSTRAINT supp_pk PRIMARY KEY (supp_id)
+) ;
+
+
+CREATE TABLE MI181_ASCASABUENA.employee (
+  emp_id NUmber(10) NOT NULL,
+  emp_fname varchar(45) NOT NULL,
+  emp_lname varchar(45) NOT NULL,
+  emp_dob date DEFAULT NULL,
+  emp_address varchar(45)  DEFAULT NULL,
+  emp_date_hired date DEFAULT NULL,
+  CONSTRAINT emp_pk PRIMARY KEY (emp_id)
+) ;
+
+CREATE TABLE MI181_ASCASABUENA.online_customer (
+  onl_id NUmber(10) NOT NULL,
+  onl_fname varchar(45) DEFAULT NULL,
+  onl_lname varchar(45) DEFAULT NULL,
+  onl_dob date DEFAULT NULL,
+  CONSTRAINT onl_pk PRIMARY KEY (onl_id)
+) ;
+
+
+CREATE TABLE MI181_ASCASABUENA.onsite_customer (
+  ons_id NUmber(10) NOT NULL,
+  ons_fname varchar(45) DEFAULT NULL,
+  ons_lname varchar(45) DEFAULT NULL,
+  ons_dob date DEFAULT NULL,
+  CONSTRAINT ons_pk PRIMARY KEY (ons_id)
+) ;
+
+
+CREATE TABLE MI181_ASCASABUENA.orders (
+  ord_id NUMBER(10) NOT NULL,
+  ord_menu_name varchar(45) DEFAULT NULL,
+  ord_amount integer DEFAULT NULL,
+  ord_date timestamp NOT NULL,
+  CONSTRAINT ord_pk PRIMARY KEY (ord_id)
+
+) ;
+
+
+CREATE TABLE MI181_ASCASABUENA.product (
+  prod_id NUMBER(10) NOT NULL,
+  prod_type varchar(45) DEFAULT NULL,
+  prod_date date DEFAULT NULL,
+  prod_date_expire date DEFAULT NULL,
+  prod_num_items integer DEFAULT NULL,
+  CONSTRAINT prod_pk PRIMARY KEY (prod_id)
+) ;
+
+CREATE TABLE MI181_ASCASABUENA.chef (
+  chef_id NUMBER(10) NOT NULL,
+  chef_position varchar (45) NOT NULL,
+  chef_lname varchar (45) NOT NULL,
+  chef_fname varchar(45) NOT NULL,
+  CONSTRAINT chef_pk PRIMARY KEY (chef_id)
+)  ;
+
+
+/*CREATE TABLE supplier_restaurant(
+  res_id integer NOT NULL,
+  supplier_id integer NOT NULL,
+  grant_date timestamp ,
+  PRIMARY KEY (user_id, role_id),
+  CONSTRAINT integer suppplier_restaurant_res_id_fkey FOREIGN KEY (res_id)
+      REFERENCES restaurant (res_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAintegerplier_restaurant_supplier_id_fkey FOREIGN KEY (suppplier_id)
+      REFERENCES supplier (supplier_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+);*/
+
+CREATE TABLE MI181_ASCASABUENA.restaurant_supplier (
+  res_id NUMBER REFERENCES MI181_ASCASABUENA.restaurant (res_id),
+  supp_id NUMBER REFERENCES MI181_ASCASABUENA.supplier (supp_id), 
+  integ_date timestamp,
+  CONSTRAINT restaurant_supplier_id PRIMARY KEY (res_id, supp_id)  -- explicit pk
+);
+
+ALTER USER MI181_ASCASABUENA quota unlimited on USERS
+
+
+INSERT INTO MI181_ASCASABUENA.chef (chef_id, chef_position, chef_lname, chef_fname) VALUES
+(1, 'head chef', 'Bernardo', 'Herrick' );
+(2, 'sous chef', 'Jeremy', 'Carmack');
+
+INSERT INTO MI181_ASCASABUENA.online_customer (onl_id, onl_fname, onl_lname, onl_dob) VALUES
+--(1, 'Ramsay', 'Karena',DATE '1998-07-09');
+--(2, 'Carney', 'Daniele',DATE '1990-10-04');
+--(3, 'Bryce', 'Harper',DATE '1985-10-02');
+--(4, 'Jose', 'Altuve',DATE '1988-04-08');
+--(5, 'Trae', 'Young',DATE '1999-09-03');
+(6, 'Jaren', 'Jackson',DATE '1997-12-06');
+(do each parenthesis one by one)
+
+INSERT INTO MI181_ASCASABUENA.onsite_customer (ons_id, ons_fname, ons_lname, ons_dob) VALUES
+--(1, 'Tom', 'Tomson',DATE  '2019-10-17');
+(2, 'Jean', 'Garisson',DATE '2018-10-25');
+
+
+INSERT INTO MI181_ASCASABUENA.orders (ord_id, ord_menu_name, ord_amount, ord_date ) VALUES
+--(1, 'pancake', 280, Date '1957-06-13');
+(2, 'shake', 190, Date '1957-06-13');
+
+
+INSERT INTO MI181_ASCASABUENA.product (prod_id, prod_type, prod_date, prod_date_expire, prod_num_items) VALUES
+--(1, 'perishable',DATE '2019-10-17',DATE '2019-10-11', 23);
+(2, 'perishable',DATE '2019-10-31',DATE '2020-02-13', 522);
+
+
+INSERT INTO MI181_ASCASABUENA.restaurant (res_id, res_loc, res_employed_num) VALUES
+--(1, 'Chambersburg City', 32);
+(2, 'Jefferson City', 32);
+
+INSERT INTO MI181_ASCASABUENA.supplier (supp_id, supp_name, supp_contact, supp_address) VALUES
+--(1, 'meat.ly', 922222, '1019  Cambridge Court');
+(2, 'Foodure', 71763487, '1335  Lincoln Drive');
+
+
+
+/* QUERY THAT I USED */
+
+--->FULL JOIN for TABLE CHEF AND PRODUCT
+SELECT * FROM MI181_ASCASABUENA.product
+FULL JOIN MI181_ASCASABUENA.chef ON chef_id = product_id;
